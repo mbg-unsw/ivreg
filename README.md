@@ -1,11 +1,10 @@
-# Method of the month: The Newey-West estimator and interrupted time series
-A ten-minute rough-and-ready talk introducing the Newey-West
-heteroskedasticity- and autocorrelation-robust estimator for a non-technical
-audience and assessing how useful it is for interrupted time series
-analysis of health policy interventions.
+# Brief workshop: Instrumental variable analysis in R using two-stage least squares
+A half-hour interactive workshop introducing instrumental variable (IV) regression.
 
-Delivered to the Medicines Policy Research Unit monthly Work In Progress
-meeting on 20 May 2021.
+Based heavily on https://www.econometrics-with-r.org/ (especially section 12.1)
+
+Delivered to the Medicines Intelligence Centre of Research Excellence methods and data
+group on 7 December 2022.
 
 [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
 
