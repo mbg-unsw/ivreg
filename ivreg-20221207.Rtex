@@ -1,0 +1,118 @@
+% Brief workshop on instrumental variable regression in R
+% (c) 2022 Malcolm Gillies <malcolm.gillies@unsw.edu.au>
+% https://github.com/mbg-unsw/ivreg
+%
+% This work is licensed under a
+% Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+% International Licence
+\documentclass[aspectratio=169,12pt]{beamer} % XXXX fix AR here
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usefonttheme{serif} % need this with Charter font
+\usetheme{Berlin}  % using default now
+\usecolortheme{beaver}  % using default now
+\usepackage[libertine]{libertine} % not using osf (old-style figures)
+\usepackage[scale=0.9]{tgheros} % scale to match libertine
+\usepackage[varqu,varl]{inconsolata}
+\usepackage[libertine]{newtxmath}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tikzpagenodes}
+\usepackage{natbib}
+\usepackage{gitinfo2}
+
+\renewcommand{\gitMark}{\color{gray}\texttt{\tiny\gitBranch\,@\,\gitAbbrevHash\,\gitAuthorDate}}
+
+\setbeamertemplate{navigation symbols}{} % remove navigation symbols
+\setbeamercolor*{item}{fg=darkred}
+
+\title{Intro to instrumental variable regression in R}
+\author{Malcolm Gillies}
+\date{7 December 2022}
+\usebackgroundtemplate{%
+\begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=south west,scale=1,rotate=90] at ([shift={(0cm,0cm)}]current page marginpar area.south east) {\gitMark};
+\end{tikzpicture}%
+}
+\begin{document}
+
+{
+%\usebackgroundtemplate{}
+\begin{frame}
+\titlepage
+\end{frame}
+}
+
+\begin{frame}{Acknowledgement}
+
+The material in this presentation was adapted from:
+
+\medskip
+
+\textbf{Introduction to Econometrics with R}
+
+\emph{Christoph Hanck, Martin Arnold, Alexander Gerber, and Martin Schmelzer}
+
+2021-10-06
+
+\url{https://www.econometrics-with-r.org/}
+
+\medskip
+
+Especially Chapter 12 / Section 12.1
+
+\end{frame}
+
+\begin{frame}{Note on terminology}
+	\begin{itemize}
+		\item Econometrics and (bio)statistics use different words for things
+		\item A glossary can help, e.g. \cite{gunasekara_2008}
+		\item \emph{Endogenous regressor} $\sim$ Confounded independent variable
+	\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Notation}
+	\begin{itemize}
+		\item $X_i$ independent variable
+		\item $Z_i$ instrumental variable
+		\item $Y_i$ outcome variable
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Two-stage least-squares regression}
+First stage: regress independent variable on IV and
+predict ``good part'' of independent variable
+\begin{gather}
+X_i = \underbrace{\pi_0 + \pi_1 Z_i}_\text{good} + \underbrace{\nu_i}_\text{bad} \\
+\hat{X}_i = \hat{\pi}_0 + \hat{\pi}_1 Z_i
+\end{gather}
+
+Second stage: regress outcome on predictions to yield effect $\beta_1$
+
+\begin{equation}
+Y_i = \beta_0 + \beta_1 \hat{X}_i + \epsilon_i
+\end{equation}
+\end{frame}
+
+\begin{frame}{Example: how do cigarette sales vary with price?}
+\begin{itemize}
+	\item Does increasing the price of cigarettes cause a decrease in sales?
+		\begin{itemize}
+			\item \emph{Elasticity of demand}
+		\end{itemize}
+	\item Not confounding per se
+		\begin{itemize}
+			\item \emph{Simultaneous causality} (two-way causality) in supply and demand
+		\end{itemize}
+	\item Instrumental variable analysis can remove bias
+\end{itemize}
+\end{frame}
+
+\begin{frame}{References}
+        \tiny\bibliography{ivreg.bib}
+        \bibliographystyle{abbrvnat}
+\end{frame}
+
+\end{document}
