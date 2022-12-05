@@ -27,6 +27,11 @@
 \setbeamertemplate{navigation symbols}{} % remove navigation symbols
 \setbeamercolor*{item}{fg=darkred}
 
+%% begin.rcode setup, include=FALSE
+% library(knitr)
+% opts_chunk$set(fig.path='figure/latex-', cache.path='cache.latex-', size='small')
+%% end.rcode
+
 \title{Intro to instrumental variable regression in R}
 \author{Malcolm Gillies}
 \date{7 December 2022}
@@ -109,6 +114,98 @@ Y_i = \beta_0 + \beta_1 \hat{X}_i + \epsilon_i
 	\item Instrumental variable analysis can remove bias
 \end{itemize}
 \end{frame}
+
+\begin{frame}[fragile]{Setup}
+%% begin.rcode vars, warning=FALSE, message=FALSE
+%#### load the data set and get an overview
+%library(AER)
+%data("CigarettesSW")
+%
+%#### compute real per capita prices
+%CigarettesSW$rprice <- with(CigarettesSW, price / cpi)
+%
+%####  compute the sales tax
+%CigarettesSW$salestax <- with(CigarettesSW, (taxs - tax) / cpi)
+% 
+%#### generate a subset for the year 1995
+%c1995 <- subset(CigarettesSW, year == "1995")
+%
+%% end.rcode
+\end{frame}
+
+\begin{frame}[fragile]{Scatterplot}
+%% begin.rcode scatter, fig.height=1.7, fig.width=3.4
+%library(ggplot2)
+%ggplot(data=c1995, aes(x=log(rprice), y=log(packs))) +
+%    geom_smooth(method='lm', formula= y~x) + geom_point()
+%
+%% end.rcode
+\end{frame}
+
+\begin{frame}[fragile]{Naive estimate}
+%% begin.rcode lm
+%summary(lm(log(packs)~log(rprice), data=c1995))$coefficients
+%
+%% end.rcode
+\end{frame}
+
+\begin{frame}[fragile]{Scatterplot (instrumental variable)}
+%% begin.rcode scatter2, fig.height=1.7, fig.width=3.4
+%library(ggplot2)
+%ggplot(data=c1995, aes(x=salestax, y=log(rprice))) +
+%    geom_smooth(method='lm', formula= y~x) + geom_point()
+%
+%% end.rcode
+\end{frame}
+
+\begin{frame}[fragile]{First stage regression (1)}
+%% begin.rcode fs1
+%cig_s1 <- lm(log(rprice) ~ salestax, data = c1995)
+%
+%coeftest(cig_s1, vcov = vcovHC, type = "HC1")
+%
+%% end.rcode
+\end{frame}
+
+\begin{frame}[fragile]{First stage regression (2)}
+%% begin.rcode fs2
+%#### inspect the R^2 of the first stage regression
+%summary(cig_s1)$r.squared
+%
+%#### store the predicted values
+%lcigp_pred <- cig_s1$fitted.values
+%
+%% end.rcode
+\end{frame}
+
+\begin{frame}[fragile]{Second stage regression}
+%% begin.rcode ss
+%cig_s2 <- lm(log(c1995$packs) ~ lcigp_pred)
+%coeftest(cig_s2, vcov = vcovHC)
+%
+%% end.rcode
+\end{frame}
+
+\begin{frame}[fragile]{Automated TSLS using \texttt{ivreg()}}
+%% begin.rcode ivreg
+%cig_ivreg <- ivreg(log(packs) ~ log(rprice) | salestax, data = c1995)
+%coeftest(cig_ivreg, vcov = vcovHC, type = "HC1")
+%
+%% end.rcode
+\end{frame}
+
+\begin{frame}[fragile]{Check strength of instrument using $F$ test}
+%% begin.rcode ftest, size='scriptsize'
+%linearHypothesis(cig_s1, "salestax=0", vcov = vcovHC, type = "HC1")
+%
+%% end.rcode
+\end{frame}
+\begin{frame}{References}
+        \tiny\bibliography{ivreg.bib}
+        \bibliographystyle{abbrvnat}
+\end{frame}
+
+\end{document}
 
 \begin{frame}{References}
         \tiny\bibliography{ivreg.bib}
