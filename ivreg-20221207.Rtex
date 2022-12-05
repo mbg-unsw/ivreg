@@ -75,7 +75,14 @@ Especially Chapter 12 / Section 12.1
 		\item A glossary can help, e.g. \cite{gunasekara_2008}
 		\item \emph{Endogenous regressor} $\sim$ Confounded independent variable
 	\end{itemize}
+\end{frame}
 
+\begin{frame}{IV assumptions}
+	\begin{enumerate}
+		\item Strongly related to the independent variable
+		\item Uncorrelated with confounders and only related to
+			outcome via the independent variable
+	\end{enumerate}
 \end{frame}
 
 \begin{frame}{Notation}
@@ -200,12 +207,14 @@ Y_i = \beta_0 + \beta_1 \hat{X}_i + \epsilon_i
 %
 %% end.rcode
 \end{frame}
-\begin{frame}{References}
-        \tiny\bibliography{ivreg.bib}
-        \bibliographystyle{abbrvnat}
-\end{frame}
 
-\end{document}
+\begin{frame}{Additional worked examples}
+	\begin{itemize}
+		\item \emph{Causal Inference in Education}
+		\item \url{https://bookdown.org/aschmi11/causal_inf/instrumental-variables-estimation.html}
+		\item A tutorial on the use of instrumental variables in pharamcoepidemiology \cite{ertefaie_2017}
+	\end{itemize}
+\end{frame}
 
 \begin{frame}{References}
         \tiny\bibliography{ivreg.bib}
